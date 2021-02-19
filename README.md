@@ -1,5 +1,4 @@
-#Guessr
-
+# Guessr
 ![Version Badge](https://img.shields.io/badge/Version-Alpha-blue)
 
 <h2>What is Guessr?</h2>
