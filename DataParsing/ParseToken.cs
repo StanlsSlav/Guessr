@@ -12,7 +12,6 @@ namespace OpenTriviaAPICaller
 
 		public static APIToken ParsedToken = new();
 
-		#region DRY
 		public static async Task RetrieveToken()
 		{
 			var webContent = await _Client.GetStringAsync(_BaseUrl + "request");
@@ -29,14 +28,11 @@ namespace OpenTriviaAPICaller
 			UpdateTime();
 			await ErrorsDictionary.HandleResponseCode(DeserializeObject<APIToken>(webContent).ResponseCode);
 		}
-		#endregion
 
 		public static void LoadToken()
 		{
 			if (File.Exists("token.json"))
 				ParsedToken = DeserializeObject<APIToken>(File.ReadAllText("token.json"));
-			else
-				File.Create("token.json").Close();
 		}
 
 		private static void UpdateTime() => ParsedToken.RequestDate = DateTime.Now;

@@ -22,7 +22,6 @@
 		Boolean
 	}
 
-	//BadPractice
 	enum CategoryChoices
 	{
 		All = -1, //All is extra

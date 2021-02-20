@@ -40,9 +40,6 @@ namespace OpenTriviaAPICaller
 					}
 					else
 					{
-						/* ====================== Bug =======================
-						 * Repeats the same question on placesTillCorrect > 2
-						 *               As of i is 0 twice                */
 						Colored(
 							input: _Trivia.IncorrectAnswers[i == 0 ? i : i - 1],
 							prefixToColor: $"{showChoiceNr})",
