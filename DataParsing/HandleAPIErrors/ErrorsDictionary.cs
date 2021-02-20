@@ -22,15 +22,17 @@ namespace OpenTriviaAPICaller
 
 		public static async Task HandleResponseCode(int responseCode)
 		{
-			showError:
 			if (responseCode == 0) return; //Code 0 is an all clear
-			
+			var isTokenError = responseCode == 3 || responseCode == 4;
+
+			showError:
 			Colored(
 				input: $"ERROR ENCOUNTERED! Continue? (Y/N)\n\t{_Error[responseCode][0]} -- {_Error[responseCode][1]}\n",
 				foreground: Red
 			);
 
-			if (responseCode != 2)
+			//
+			if (isTokenError)
 			{
 				Colored(
 					input: "Retrieve a token? (R)",
@@ -48,7 +50,8 @@ namespace OpenTriviaAPICaller
 					Menu._QuitMessage(); break;
 
 				case ConsoleKey.R:
-					await ParseAPIToken.RetrieveToken(); break;
+					if (isTokenError)
+						await ParseAPIToken.RetrieveToken(); break;
 
 				default:
 					Clear(); goto showError;
