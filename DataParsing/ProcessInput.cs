@@ -8,8 +8,6 @@ namespace OpenTriviaAPICaller
 		/// Checks if the user input is equal to the correct answer
 		/// Or if a custom command was inputted
 		/// </summary>
-		/// <param name="input">Holds the user input</param>
-		/// <returns>A boolean, if the user input is the right answer then true</returns>
 		public static async Task<bool> CheckIfCorrect(string input)
 		{
 			//Custom console commands during the game
