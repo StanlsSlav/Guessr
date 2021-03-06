@@ -16,7 +16,6 @@ Guessr holds some extra commands which work only during the gameplay:
 | **q** or **quit** | Exits the application |
 
 ### Todo
-- Refactor the **for** loop in file "StartTrivia.cs"
 - *DRY* the code in file "ParseToken.cs"
 - Refactor the way it's handling the token (works, but hardly)
 
