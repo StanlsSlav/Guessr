@@ -10,9 +10,8 @@ namespace OpenTriviaAPICaller
 {
 	class StartTrivia
 	{
-		/// <summary>
-		/// Game UI
-		/// </summary>
+		/* Game UI */
+
 		public static async Task Start()
 		{
 			CursorVisible = false;
@@ -20,34 +19,29 @@ namespace OpenTriviaAPICaller
 			while (true)
 			{
 				await ParseQuestion();
-				var placesTillCorrect = new Random().Next(1, _Trivia.IncorrectAnswers.Count + 2);
-				var correctChoiceNr = placesTillCorrect;
+
+				///<placesTillCorrect>Sets the place of the right answer as an index</placesTillCorrect>
+				///<correctChoiceNr>Save the correct choice number as an non index</correctChoiceNr>
+				///<toRest>Fix the repeating of the last wrong answer</toRest>
+				var placesTillCorrect = new Random().Next(0, _Trivia.IncorrectAnswers.Count + 1);
+				var correctChoiceNr = placesTillCorrect + 1;
+				var toRest = 0;
 
 				WriteLine(_Trivia.Question + '\n');
-
-				int showChoiceNr = 1;
+				var showPlaceNr = 1;
 				for (int i = 0; i <= _Trivia.IncorrectAnswers.Count; i++)
 				{
+					var isPlaceForCorrect = placesTillCorrect == 0;
+
+					Colored(
+						input: isPlaceForCorrect ? _Trivia.CorrectAnswer.TrimStart() : _Trivia.IncorrectAnswers[i - toRest],
+						prefixToColor: $"{showPlaceNr})",
+						foreground: DarkYellow
+					);
+
+					if (isPlaceForCorrect) toRest++;
 					placesTillCorrect--;
-
-					if (placesTillCorrect == 0)
-					{
-						Colored(
-							input: _Trivia.CorrectAnswer.TrimStart(),
-							prefixToColor: $"{correctChoiceNr})", //Always show the correct choice
-							foreground: DarkYellow
-						);
-					}
-					else
-					{
-						Colored(
-							input: _Trivia.IncorrectAnswers[i == 0 ? i : i - 1],
-							prefixToColor: $"{showChoiceNr})",
-							foreground: DarkYellow
-						);
-					}
-
-					showChoiceNr++;
+					showPlaceNr++;
 				}
 
 				Write("\nAnswer: ");
