@@ -18,7 +18,3 @@ Guessr holds some extra commands which work only during the gameplay:
 ### Todo
 - *DRY* the code in file "ParseToken.cs"
 - Refactor the way it's handling the token (works, but hardly)
-
-***P.S.*** Don't request token after token after token after token because at its current state it can be broken fairly easily
-- While in the menus, succesivly  
-- Playing without an token will result in an thrown exception
