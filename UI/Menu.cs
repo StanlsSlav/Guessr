@@ -1,10 +1,12 @@
 ﻿using System;
+using System.IO;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using static OpenTriviaAPICaller.ColorFeedBack;
 using static OpenTriviaAPICaller.FilterRequests;
 using static OpenTriviaAPICaller.ParseAPIToken;
 using static System.Console;
+using static System.Text.Json.JsonSerializer;
 
 namespace OpenTriviaAPICaller
 {
@@ -90,16 +92,19 @@ namespace OpenTriviaAPICaller
 							Colored("Resetted token " + ParsedToken.Token);
 							break;
 						case "3":
-							var leftTime = ParsedToken.RequestDate.AddHours(6) - DateTime.Now;
-							Colored("Token: " + ParsedToken.Token);
+							var doesTokenExist = File.Exists("token.json");
 
+							// Possible drawback, but check status on file rather than object
+							var leftTime = doesTokenExist ?
+								Deserialize<APIToken>(File.ReadAllText("token.json")).RequestDate.AddHours(6) - DateTime.Now : TimeSpan.FromSeconds(0);
+							
+							Colored("Token: " + ParsedToken.Token ?? "Null");
 							Colored(
-								input: "Available to use: " + (leftTime.TotalHours > 0),
-								foreground: leftTime.TotalHours > 0 ? ConsoleColor.Green : ConsoleColor.Red
+								input: "Available to use: " + doesTokenExist,
+								foreground: doesTokenExist ? ConsoleColor.Green : ConsoleColor.Red
 							);
-
 							Colored("Time left: " + leftTime);
-							_WaitTime = TimeSpan.FromSeconds(3); //Extra time to appraise the token infos
+							_WaitTime = TimeSpan.FromSeconds(2.5); //Extra time to appraise the token infos
 							break;
 						case "4":
 							Colored("Opening the path with the token file");
@@ -147,8 +152,9 @@ namespace OpenTriviaAPICaller
 				var currentNr = i + 1;
 
 				Colored(
-				input: menuOptions[i],
-				prefixToColor: (currentNr) + ")");
+					input: menuOptions[i],
+					prefixToColor: currentNr + ")"
+				);
 			}
 		}
 
