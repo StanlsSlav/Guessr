@@ -1,4 +1,4 @@
-﻿namespace OpenTriviaAPICaller
+﻿namespace OpenTrivia
 {
 	class UserSettings
 	{

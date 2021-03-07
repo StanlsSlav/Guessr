@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using Newtonsoft.Json;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
     public class Root
     {
