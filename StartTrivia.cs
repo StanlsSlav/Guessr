@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using static System.Console;
 using static System.ConsoleColor;
 using static OpenTrivia.ParseRequest;
+using static OpenTrivia.ProcessInput;
 using static OpenTrivia.ColorFeedBack;
 
 namespace OpenTrivia
@@ -50,7 +51,7 @@ namespace OpenTrivia
 				if (int.TryParse(userInput, out int userIntInput) && userIntInput == correctChoiceNr)
 					userInput = Quizz.CorrectAnswer;
 
-				if (await ProcessInput.CheckIfCorrect(userInput))
+				if (await CheckIfCorrect(userInput))
 					Colored("Correct!", foreground: Green);
 
 				else

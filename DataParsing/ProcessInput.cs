@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using static OpenTrivia.ParseRequest;
 
 namespace OpenTrivia
 {
@@ -19,7 +20,7 @@ namespace OpenTrivia
 			}
 
 			//CapsLock forgotten
-			return input.ToLower() == ParseRequest.Quizz.CorrectAnswer.ToLower();
+			return input.ToLower() == Quizz.CorrectAnswer.ToLower();
 		}
 	}
 }

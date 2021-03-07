@@ -1,14 +1,16 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using static System.Console;
 using static System.ConsoleColor;
 using static OpenTrivia.ColorFeedBack;
+using static OpenTrivia.ParseAPIToken;
 
 namespace OpenTrivia
 {
 	class ErrorsDictionary
 	{
-		private static readonly System.Collections.Generic.Dictionary<int, string[]> _Error = new()
+		private static readonly Dictionary<int, string[]> _Error = new()
 		{
 			[1] = new string[2] { "No Results", "Could not return results. The API doesn\'t have enough questions for your query." },
 			[2] = new string[2] { "Invalid Parameter", "Contains an invalid parameter. Arguements passed in aren\'t valid" },
@@ -47,7 +49,7 @@ namespace OpenTrivia
 
 				case ConsoleKey.R:
 					if (isTokenError)
-						await ParseAPIToken.RetrieveToken(); break;
+						await RetrieveToken(); break;
 
 				default:
 					Clear(); goto showError;
