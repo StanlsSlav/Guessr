@@ -1,6 +1,6 @@
 ﻿using System.Threading.Tasks;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class ProcessInput
 	{
@@ -19,7 +19,7 @@ namespace OpenTriviaAPICaller
 			}
 
 			//CapsLock forgotten
-			return input.ToLower() == ParseRequest._Trivia.CorrectAnswer.ToLower();
+			return input.ToLower() == ParseRequest.Quizz.CorrectAnswer.ToLower();
 		}
 	}
 }

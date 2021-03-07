@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class FilterRequests
 	{
