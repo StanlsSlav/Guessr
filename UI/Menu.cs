@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
+using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 using static System.Console;
 using static System.Text.Json.JsonSerializer;
 using static OpenTrivia.ColorFeedBack;
@@ -93,7 +95,7 @@ namespace OpenTrivia
 						case "3":
 							var doesTokenExist = File.Exists("token.json");
 
-							// Possible drawback, but check status on file rather than object
+							// Possible drawback, check status on file rather than object
 							var leftTime = doesTokenExist ?
 								Deserialize<APIToken>(File.ReadAllText("token.json")).RequestDate.AddHours(6) - DateTime.Now : TimeSpan.FromSeconds(0);
 							
@@ -107,7 +109,7 @@ namespace OpenTrivia
 							break;
 						case "4":
 							Colored("Opening the path with the token file");
-							System.Diagnostics.Process.Start("cmd.exe", "/c explorer " + Environment.CurrentDirectory);
+							Process.Start("cmd.exe", "/c explorer " + Environment.CurrentDirectory);
 							break;
 						case "5": _CurrentMenu = Menus.Main; break;
 						default: goto renderStart;
@@ -124,7 +126,7 @@ namespace OpenTrivia
 		/// </summary>
 		private static void RenderMenu()
 		{
-			System.Collections.Generic.List<string> menuOptions = new();
+			List<string> menuOptions = new();
 
 			switch (_CurrentMenu)
 			{
