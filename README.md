@@ -5,8 +5,8 @@
 Guessr is an **console** application which calls the [OpenTrivia's API](https://opentdb.com/) to retrieve... well... the trivia questions
 
 ### HowTo
-Aside from the simplistic UI, while in game the answer can either be explicitly inputted (write the whole answer) or its corresponding number.Anything else will be treated as an incorrect answer and will fail the current question.
-All input will need to be registered (write and press {Enter}) unless an error from the API was caught, which detects the keyboard events.
+Aside from the simplistic UI, while in game the answer can either be explicitly inputted (write the whole answer) or its corresponding number. Anything else will be treated as an incorrect answer and will fail the current question.
+All input will need to be registered (write and press {Enter}) unless an error from the API was caught, which detects the keyboard key presses.
 
 ### Commands
 Guessr holds some extra commands which work only during the gameplay:
