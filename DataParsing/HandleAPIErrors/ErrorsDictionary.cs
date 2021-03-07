@@ -1,14 +1,10 @@
-﻿/* ==============================================
- *                   To Finish                   
- * =========================================== */
-
-using System;
+﻿using System;
 using System.Threading.Tasks;
 using static System.Console;
 using static System.ConsoleColor;
-using static OpenTriviaAPICaller.ColorFeedBack;
+using static OpenTrivia.ColorFeedBack;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class ErrorsDictionary
 	{
