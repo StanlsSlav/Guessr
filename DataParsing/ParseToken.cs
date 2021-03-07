@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
+﻿using System.IO;
 using System.Threading.Tasks;
 using static Newtonsoft.Json.JsonConvert;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class ParseAPIToken
 	{
@@ -35,6 +34,6 @@ namespace OpenTriviaAPICaller
 				ParsedToken = DeserializeObject<APIToken>(File.ReadAllText("token.json"));
 		}
 
-		private static void UpdateTime() => ParsedToken.RequestDate = DateTime.Now;
+		private static void UpdateTime() => ParsedToken.RequestDate = System.DateTime.Now;
 	}
 }

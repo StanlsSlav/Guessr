@@ -1,14 +1,13 @@
 ﻿using System;
 using System.IO;
 using System.Threading.Tasks;
-using System.Collections.Generic;
-using static OpenTriviaAPICaller.ColorFeedBack;
-using static OpenTriviaAPICaller.FilterRequests;
-using static OpenTriviaAPICaller.ParseAPIToken;
 using static System.Console;
 using static System.Text.Json.JsonSerializer;
+using static OpenTrivia.ColorFeedBack;
+using static OpenTrivia.FilterRequests;
+using static OpenTrivia.ParseAPIToken;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class Menu
 	{
@@ -125,7 +124,7 @@ namespace OpenTriviaAPICaller
 		/// </summary>
 		private static void RenderMenu()
 		{
-			List<string> menuOptions = new();
+			System.Collections.Generic.List<string> menuOptions = new();
 
 			switch (_CurrentMenu)
 			{

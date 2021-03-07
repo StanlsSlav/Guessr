@@ -1,7 +1,7 @@
 ﻿using System;
 using static System.Console;
 
-namespace OpenTriviaAPICaller
+namespace OpenTrivia
 {
 	class ColorFeedBack
 	{
