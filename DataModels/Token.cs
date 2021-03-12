@@ -1,16 +1,16 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace OpenTrivia
 {
     public class APIToken
     {
-        [JsonProperty("response_code")]
+        [JsonPropertyName("response_code")]
         public int ResponseCode { get; set; }
 
-        [JsonProperty("response_message")]
+        [JsonPropertyName("response_message")]
         public string ResponseMessage { get; set; }
 
-        [JsonProperty("token")]
+        [JsonPropertyName("token")]
         public string Token { get; set; }
 
         public System.DateTime RequestDate { get; set; }
