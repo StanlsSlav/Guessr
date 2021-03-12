@@ -1,7 +1,7 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
 using static System.Net.WebUtility;
-using static Newtonsoft.Json.JsonConvert;
+using static System.Text.Json.JsonSerializer;
 using static OpenTrivia.ErrorsDictionary;
 
 namespace OpenTrivia
@@ -14,7 +14,7 @@ namespace OpenTrivia
 		public static async Task ParseQuestion()
 		{
 			var webResponse = await new HttpClient().GetStringAsync(_BaseUrl + FilterRequests.Options);
-			var root = DeserializeObject<Root>(webResponse);
+			var root = Deserialize<Root>(webResponse);
 
 			//Had returned an error?
 			await HandleResponseCode(root.ResponseCode);
