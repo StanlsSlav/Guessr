@@ -9,4 +9,8 @@
     <Optimize>true</Optimize>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Content Include=".github\workflows\main.yml" />
+  </ItemGroup>
+
 </Project>
