@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
-using static OpenTriviaAPICaller.src.DataParsing.ParseRequest;
-using static OpenTriviaAPICaller.src.DataParsing.ProcessInput;
-using static OpenTriviaAPICaller.src.ColorFeedBack;
+using static OpenTriviaAPICaller.DataParsing.ParseRequest;
+using static OpenTriviaAPICaller.DataParsing.ProcessInput;
+using static OpenTriviaAPICaller.ColorFeedBack;
 
-namespace OpenTriviaAPICaller.src
+namespace OpenTriviaAPICaller
 {
     internal static class StartTrivia
     {

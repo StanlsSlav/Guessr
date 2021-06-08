@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenTriviaAPICaller.src
+namespace OpenTriviaAPICaller
 {
     internal static class ColorFeedBack
     {

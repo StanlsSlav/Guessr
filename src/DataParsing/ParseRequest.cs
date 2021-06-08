@@ -1,12 +1,12 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.DataModels;
-using OpenTriviaAPICaller.src.UserSettings;
+using OpenTriviaAPICaller.DataModels;
+using OpenTriviaAPICaller.UserSettings;
 using static System.Net.WebUtility;
 using static System.Text.Json.JsonSerializer;
-using static OpenTriviaAPICaller.src.DataParsing.HandleAPIErrors.ErrorsDictionary;
+using static OpenTriviaAPICaller.DataParsing.HandleAPIErrors.ErrorsDictionary;
 
-namespace OpenTriviaAPICaller.src.DataParsing
+namespace OpenTriviaAPICaller.DataParsing
 {
     internal static class ParseRequest
     {

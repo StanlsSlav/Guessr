@@ -3,24 +3,24 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.DataModels;
+using OpenTriviaAPICaller.DataModels;
+using OpenTriviaAPICaller.UserSettings;
 using static System.Text.Json.JsonSerializer;
-using static OpenTriviaAPICaller.src.ColorFeedBack;
-using static OpenTriviaAPICaller.src.UserSettings.FilterRequests;
-using static OpenTriviaAPICaller.src.DataParsing.ParseApiToken;
+using static OpenTriviaAPICaller.ColorFeedBack;
+using static OpenTriviaAPICaller.UserSettings.FilterRequests;
+using static OpenTriviaAPICaller.DataParsing.ParseApiToken;
 
-namespace OpenTriviaAPICaller.src.UI
+namespace OpenTriviaAPICaller.UI
 {
     internal static class Menu
     {
         private static Menus _currentMenu = Menus.Main;
-        private static readonly DataModels.UserSettings Settings = new();
         private static readonly int TotalDifficultyChoices = Enum.GetValues(typeof(DifficultyChoices)).Length;
         private static readonly int TotalTypeChoices = Enum.GetValues(typeof(TypeChoices)).Length;
         private static TimeSpan _waitTime = TimeSpan.FromSeconds(0.75);
 
         /// <summary>
-        ///     Exit the programm
+        ///     Exit the program
         /// </summary>
         public static readonly Action<int> Exit = exitCode =>
         {
@@ -55,7 +55,7 @@ namespace OpenTriviaAPICaller.src.UI
                     {
                         case "1":
                             Console.Clear();
-                            Filter(Settings, ParsedToken);
+                            Filter(ParsedToken);
                             await StartTrivia.Start();
                             break;
                         case "2":
@@ -76,18 +76,18 @@ namespace OpenTriviaAPICaller.src.UI
                     switch (userInput)
                     {
                         case "1":
-                            Settings.Category += 1;
-                            Colored("Category set to " + Enum.GetName(typeof(CategoryChoices), Settings.Category)
+                            UserOptions.Category += 1;
+                            Colored("Category set to " + Enum.GetName(typeof(CategoryChoices), UserOptions.Category)
                                 .Replace('_', ' '));
                             break;
                         case "2":
-                            Settings.Difficulty = (Settings.Difficulty + 1) % TotalDifficultyChoices;
+                            UserOptions.Difficulty = (UserOptions.Difficulty + 1) % TotalDifficultyChoices;
                             Colored("Difficulty set to " +
-                                    Enum.GetName(typeof(DifficultyChoices), Settings.Difficulty));
+                                    Enum.GetName(typeof(DifficultyChoices), UserOptions.Difficulty));
                             break;
                         case "3":
-                            Settings.Type = (Settings.Type + 1) % TotalTypeChoices;
-                            Colored("Questions type set to " + Enum.GetName(typeof(TypeChoices), Settings.Type));
+                            UserOptions.Type = (UserOptions.Type + 1) % TotalTypeChoices;
+                            Colored("Questions type set to " + Enum.GetName(typeof(TypeChoices), UserOptions.Type));
                             break;
                         case "4":
                             _currentMenu = Menus.Main;
@@ -113,7 +113,8 @@ namespace OpenTriviaAPICaller.src.UI
 
                             // Possible drawback, check status on file rather than object
                             var leftTime = doesTokenExist
-                                ? Deserialize<ApiToken>(await File.ReadAllTextAsync("token.json")).RequestDate.AddHours(6) -
+                                ? Deserialize<ApiToken>(await File.ReadAllTextAsync("token.json")).RequestDate
+                                      .AddHours(6) -
                                   DateTime.Now
                                 : TimeSpan.FromSeconds(0);
 

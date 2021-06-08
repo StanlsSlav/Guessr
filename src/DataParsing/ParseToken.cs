@@ -3,11 +3,11 @@ using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.DataModels;
-using OpenTriviaAPICaller.src.DataParsing.HandleAPIErrors;
+using OpenTriviaAPICaller.DataModels;
+using OpenTriviaAPICaller.DataParsing.HandleAPIErrors;
 using static System.Text.Json.JsonSerializer;
 
-namespace OpenTriviaAPICaller.src.DataParsing
+namespace OpenTriviaAPICaller.DataParsing
 {
     internal static class ParseApiToken
     {

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Text.Json.Serialization;
 
-namespace OpenTriviaAPICaller.src.DataModels
+namespace OpenTriviaAPICaller.DataModels
 {
     public class ApiToken
     {
