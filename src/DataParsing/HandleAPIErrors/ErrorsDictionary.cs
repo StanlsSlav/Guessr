@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.UI;
+using OpenTriviaAPICaller.UI;
 using static System.ConsoleColor;
-using static OpenTriviaAPICaller.src.ColorFeedBack;
-using static OpenTriviaAPICaller.src.DataParsing.ParseApiToken;
+using static OpenTriviaAPICaller.ColorFeedBack;
+using static OpenTriviaAPICaller.DataParsing.ParseApiToken;
 
-namespace OpenTriviaAPICaller.src.DataParsing.HandleAPIErrors
+namespace OpenTriviaAPICaller.DataParsing.HandleAPIErrors
 {
     internal static class ErrorsDictionary
     {
