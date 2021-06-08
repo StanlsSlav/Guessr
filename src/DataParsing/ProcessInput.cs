@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.UI;
-using static OpenTriviaAPICaller.src.DataParsing.ParseRequest;
+using OpenTriviaAPICaller.UI;
+using static OpenTriviaAPICaller.DataParsing.ParseRequest;
 
-namespace OpenTriviaAPICaller.src.DataParsing
+namespace OpenTriviaAPICaller.DataParsing
 {
     internal static class ProcessInput
     {

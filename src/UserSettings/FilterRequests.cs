@@ -1,24 +1,25 @@
 ﻿using System;
-using OpenTriviaAPICaller.src.DataModels;
+using OpenTriviaAPICaller.DataModels;
+using static OpenTriviaAPICaller.UserSettings.UserOptions;
 
-namespace OpenTriviaAPICaller.src.UserSettings
+namespace OpenTriviaAPICaller.UserSettings
 {
     internal static class FilterRequests
     {
         public static string Options;
 
-        public static void Filter(DataModels.UserSettings setting, ApiToken token)
+        public static void Filter(ApiToken token)
         {
             Options = "?amount=1";
 
-            if (setting.Type != 0)
-                Options += "&type=" + Enum.GetName(typeof(TypeChoices), setting.Type)?.ToLower();
+            if (UserOptions.Type != 0)
+                Options += "&type=" + Enum.GetName(typeof(TypeChoices), UserOptions.Type)?.ToLower();
 
-            else if (setting.Difficulty != 0)
-                Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), setting.Difficulty)?.ToLower();
+            else if (Difficulty != 0)
+                Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), Difficulty)?.ToLower();
 
-            else if (setting.Category != 0)
-                Options += "&category=" + (setting.Category + 9); //Offset
+            else if (Category != 0)
+                Options += "&category=" + (Category + 9); //Offset
 
             else if (token is not null)
                 Options += "&token=" + token.Token;
