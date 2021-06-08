@@ -1,5 +1,5 @@
 ﻿using System.Threading.Tasks;
-using OpenTriviaAPICaller.src.UI;
+using OpenTriviaAPICaller.UI;
 
 namespace OpenTriviaAPICaller
 {
