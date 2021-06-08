@@ -1,10 +1,12 @@
-﻿namespace OpenTriviaAPICaller.src.DataModels
+﻿namespace OpenTriviaAPICaller.UserSettings
 {
-    internal class UserSettings
+    internal static class UserOptions
     {
-        public int Category { get; set; }
-        public int Difficulty { get; set; }
-        public int Type { get; set; }
+        public static int Category { get; set; }
+
+        public static int Difficulty { get; set; }
+
+        public static int Type { get; set; }
     }
 
     internal enum DifficultyChoices
@@ -19,12 +21,13 @@
     {
         All,
         Multiple,
-        TrueOrFalse
+        Boolean
     }
 
+    // The categories start with 9 and there's an offset in 
     internal enum CategoryChoices
     {
-        All = -1, // All is extra
+        All = -1,
         GeneralKnowledge,
         Books,
         Film,
