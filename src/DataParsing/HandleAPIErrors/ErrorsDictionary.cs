@@ -40,8 +40,11 @@ namespace OpenTriviaAPICaller.DataParsing.HandleAPIErrors
 
         public static async Task HandleResponseCode(int responseCode)
         {
-            if (responseCode == 0) return; // Code 0 is an all clear
             var isTokenError = responseCode is 3 or 4;
+
+            // Code 0 is an all clear
+            if (responseCode == 0)
+                return;
 
             showError:
             Colored(
