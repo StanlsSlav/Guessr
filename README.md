@@ -6,7 +6,7 @@
 Guessr is an **console** application which calls the [OpenTrivia's API](https://opentdb.com/) to retrieve... well... the trivia questions
 
 ## Commands
-Guessr holds some extra commands which work only during the gameplay:
+Guessr holds some extra commands which work only during the game
 | Command | Action |
 | :---: | :---: |
 | **b** or **back** | Returns the user to the main menu |
