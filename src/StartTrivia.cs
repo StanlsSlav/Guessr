@@ -55,7 +55,6 @@ namespace OpenTriviaAPICaller
 
                 if (await CheckIfCorrect(userInput))
                     Colored("Correct!", foreground: Green);
-
                 else
                     Colored("Incorrect", foreground: Red);
 
