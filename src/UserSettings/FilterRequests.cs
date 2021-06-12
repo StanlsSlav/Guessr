@@ -13,16 +13,22 @@ namespace OpenTriviaAPICaller.UserSettings
             Options = "?amount=1";
 
             if (UserOptions.Type != 0)
+            {
                 Options += "&type=" + Enum.GetName(typeof(TypeChoices), UserOptions.Type)?.ToLower();
-
+            }
             else if (Difficulty != 0)
+            {
                 Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), Difficulty)?.ToLower();
-
+            }
             else if (Category != 0)
-                Options += "&category=" + (Category + 9); //Offset
-
+            {
+                //Offset
+                Options += "&category=" + (Category + 9);
+            }
             else if (token is not null)
+            {
                 Options += "&token=" + token.Token;
+            }
         }
     }
 }
