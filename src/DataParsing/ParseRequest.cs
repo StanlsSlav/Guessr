@@ -6,34 +6,33 @@ using static System.Net.WebUtility;
 using static System.Text.Json.JsonSerializer;
 using static OpenTriviaAPICaller.DataParsing.HandleAPIErrors.ErrorsDictionary;
 
-namespace OpenTriviaAPICaller.DataParsing
+namespace OpenTriviaAPICaller.DataParsing;
+
+internal static class ParseRequest
 {
-    internal static class ParseRequest
+    private const string BaseUrl = "https://opentdb.com/api.php";
+
+    public static Trivia Quiz;
+
+    public static async Task ParseQuestion()
     {
-        private const string BaseUrl = "https://opentdb.com/api.php";
+        var webResponse = await new HttpClient().GetStringAsync(BaseUrl + FilterRequests.Options);
+        var root = Deserialize<Root>(webResponse);
 
-        public static Trivia Quiz;
-
-        public static async Task ParseQuestion()
+        // Had returned an error?
+        if (root is not null)
         {
-            var webResponse = await new HttpClient().GetStringAsync(BaseUrl + FilterRequests.Options);
-            var root = Deserialize<Root>(webResponse);
+            await HandleResponseCode(root.ResponseCode);
 
-            // Had returned an error?
-            if (root is not null)
-            {
-                await HandleResponseCode(root.ResponseCode);
-
-                // The API will always respond with 1 trivia object
-                Quiz = root.Results[0];
-            }
-
-            // Html Decoding
-            Quiz.CorrectAnswer = HtmlDecode(Quiz.CorrectAnswer);
-            Quiz.Question = HtmlDecode(Quiz.Question);
-
-            for (var i = 0; i < Quiz.IncorrectAnswers.Count; i++)
-                Quiz.IncorrectAnswers[i] = HtmlDecode(Quiz.IncorrectAnswers[i]);
+            // The API will always respond with 1 trivia object
+            Quiz = root.Results[0];
         }
+
+        // Html Decoding
+        Quiz.CorrectAnswer = HtmlDecode(Quiz.CorrectAnswer);
+        Quiz.Question = HtmlDecode(Quiz.Question);
+
+        for (var i = 0; i < Quiz.IncorrectAnswers.Count; i++)
+            Quiz.IncorrectAnswers[i] = HtmlDecode(Quiz.IncorrectAnswers[i]);
     }
 }
