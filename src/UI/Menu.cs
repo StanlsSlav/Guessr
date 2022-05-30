@@ -3,14 +3,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.DataModels;
-using OpenTriviaAPICaller.UserSettings;
+using Guessr.Models;
+using Guessr.UserSettings;
 using static System.Text.Json.JsonSerializer;
-using static OpenTriviaAPICaller.ColorFeedBack;
-using static OpenTriviaAPICaller.UserSettings.FilterRequests;
-using static OpenTriviaAPICaller.DataParsing.ParseApiToken;
+using static Guessr.ColorFeedBack;
+using static Guessr.UserSettings.FilterRequests;
+using static Guessr.Parsing.ParseApiToken;
 
-namespace OpenTriviaAPICaller.UI;
+namespace Guessr.UI;
 
 internal static class Menu
 {
@@ -170,11 +170,7 @@ internal static class Menu
         for (var i = 0; i < menuOptions.Count; i++)
         {
             var currentNr = i + 1;
-
-            Colored(
-                input: menuOptions[i],
-                prefixToColor: currentNr + ")"
-            );
+            Colored(menuOptions[i], prefixToColor: currentNr + ")");
         }
     }
 
