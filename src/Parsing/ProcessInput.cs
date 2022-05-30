@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.UI;
-using static OpenTriviaAPICaller.DataParsing.ParseRequest;
+using Guessr.UI;
+using static Guessr.Parsing.ParseRequest;
 
-namespace OpenTriviaAPICaller.DataParsing;
+namespace Guessr.Parsing;
 
 internal static class ProcessInput
 {

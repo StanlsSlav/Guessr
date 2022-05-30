@@ -3,11 +3,10 @@ using System.IO;
 using System.Net.Http;
 using System.Text.Json;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.DataModels;
-using OpenTriviaAPICaller.DataParsing.HandleAPIErrors;
+using Guessr.Models;
 using static System.Text.Json.JsonSerializer;
 
-namespace OpenTriviaAPICaller.DataParsing;
+namespace Guessr.Parsing;
 
 internal static class ParseApiToken
 {

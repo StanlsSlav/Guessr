@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.UI;
+using Guessr.UI;
 using static System.ConsoleColor;
-using static OpenTriviaAPICaller.ColorFeedBack;
-using static OpenTriviaAPICaller.DataParsing.ParseApiToken;
+using static Guessr.ColorFeedBack;
+using static Guessr.Parsing.ParseApiToken;
 
-namespace OpenTriviaAPICaller.DataParsing.HandleAPIErrors;
+namespace Guessr.Parsing;
 
 internal static class ErrorsDictionary
 {
