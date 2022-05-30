@@ -1,12 +1,12 @@
 ﻿using System.Net.Http;
 using System.Threading.Tasks;
-using OpenTriviaAPICaller.DataModels;
-using OpenTriviaAPICaller.UserSettings;
+using Guessr.Models;
+using Guessr.UserSettings;
 using static System.Net.WebUtility;
 using static System.Text.Json.JsonSerializer;
-using static OpenTriviaAPICaller.DataParsing.HandleAPIErrors.ErrorsDictionary;
+using static Guessr.Parsing.ErrorsDictionary;
 
-namespace OpenTriviaAPICaller.DataParsing;
+namespace Guessr.Parsing;
 
 internal static class ParseRequest
 {

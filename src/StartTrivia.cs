@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Threading.Tasks;
 using static System.ConsoleColor;
-using static OpenTriviaAPICaller.DataParsing.ParseRequest;
-using static OpenTriviaAPICaller.DataParsing.ProcessInput;
-using static OpenTriviaAPICaller.ColorFeedBack;
+using static Guessr.Parsing.ParseRequest;
+using static Guessr.Parsing.ProcessInput;
+using static Guessr.ColorFeedBack;
 
-namespace OpenTriviaAPICaller;
+namespace Guessr;
 
 internal static class StartTrivia
 {
@@ -37,7 +37,7 @@ internal static class StartTrivia
                 var isPlaceForCorrect = placesTillCorrect == 0;
 
                 Colored(
-                    input: isPlaceForCorrect ? Quiz.CorrectAnswer.TrimStart() : Quiz.IncorrectAnswers[i - toRest],
+                    isPlaceForCorrect ? Quiz.CorrectAnswer.TrimStart() : Quiz.IncorrectAnswers[i - toRest],
                     prefixToColor: showPlaceNr + ")",
                     foreground: DarkYellow
                 );

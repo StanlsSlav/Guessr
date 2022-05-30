@@ -1,33 +1,34 @@
 ﻿using System;
-using OpenTriviaAPICaller.DataModels;
-using static OpenTriviaAPICaller.UserSettings.UserOptions;
+using Guessr.Models;
+using static Guessr.UserSettings.UserOptions;
 
-namespace OpenTriviaAPICaller.UserSettings;
-
-internal static class FilterRequests
+namespace Guessr.UserSettings
 {
-    public static string Options;
-
-    public static void Filter(ApiToken token)
+    internal static class FilterRequests
     {
-        Options = "?amount=1";
+        public static string Options;
 
-        if (UserOptions.Type != 0)
+        public static void Filter(ApiToken token)
         {
-            Options += "&type=" + Enum.GetName(typeof(TypeChoices), UserOptions.Type)?.ToLower();
-        }
-        else if (Difficulty != 0)
-        {
-            Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), Difficulty)?.ToLower();
-        }
-        else if (Category != 0)
-        {
-            //Offset
-            Options += "&category=" + (Category + 9);
-        }
-        else if (token is not null)
-        {
-            Options += "&token=" + token.Token;
+            Options = "?amount=1";
+
+            if (UserOptions.Type != 0)
+            {
+                Options += "&type=" + Enum.GetName(typeof(TypeChoices), UserOptions.Type)?.ToLower();
+            }
+            else if (Difficulty != 0)
+            {
+                Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), Difficulty)?.ToLower();
+            }
+            else if (Category != 0)
+            {
+                //Offset
+                Options += "&category=" + (Category + 9);
+            }
+            else if (token is not null)
+            {
+                Options += "&token=" + token.Token;
+            }
         }
     }
 }

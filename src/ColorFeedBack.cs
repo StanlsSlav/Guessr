@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace OpenTriviaAPICaller;
+namespace Guessr;
 
 internal static class ColorFeedBack
 {
