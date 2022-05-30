@@ -2,11 +2,8 @@
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
-    <TargetFramework>net5.0</TargetFramework>
-  </PropertyGroup>
-
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
-    <Optimize>true</Optimize>
+    <TargetFramework>net6.0</TargetFramework>
+    <LangVersion>11</LangVersion>
   </PropertyGroup>
 
   <ItemGroup>
