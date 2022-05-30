@@ -21,4 +21,4 @@ jobs:
           dotnet-version: 5.0.x
 
       - name: Build with .Net
-        run: dotnet build "OpenTriviaAPICaller.csproj" --configuration Release
+        run: dotnet build "Guessr.csproj" --configuration Release

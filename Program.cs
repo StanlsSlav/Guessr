@@ -1,13 +1,12 @@
 ﻿using System.Threading.Tasks;
-using OpenTriviaAPICaller.UI;
+using Guessr.UI;
 
-namespace OpenTriviaAPICaller
+namespace Guessr;
+
+internal static class Program
 {
-    internal static class Program
+    public static async Task Main()
     {
-        public static async Task Main()
-        {
-            await Task.Run(Menu.Render);
-        }
+        await Task.Run(Menu.Render);
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
-namespace OpenTriviaAPICaller.DataModels;
+namespace Guessr.Models;
 
 public class Root
 {
