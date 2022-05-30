@@ -7,42 +7,43 @@ using OpenTriviaAPICaller.DataModels;
 using OpenTriviaAPICaller.DataParsing.HandleAPIErrors;
 using static System.Text.Json.JsonSerializer;
 
-namespace OpenTriviaAPICaller.DataParsing
+namespace OpenTriviaAPICaller.DataParsing;
+
+internal static class ParseApiToken
 {
-    internal static class ParseApiToken
+    private const string BaseUrl = "https://opentdb.com/api_token.php?command=";
+    private static readonly HttpClient Client = new();
+
+    public static ApiToken ParsedToken = new();
+
+    public static async Task RetrieveToken()
     {
-        private const string BaseUrl = "https://opentdb.com/api_token.php?command=";
-        private static readonly HttpClient Client = new();
+        var webContent = await Client.GetStringAsync(BaseUrl + "request");
+        ParsedToken = Deserialize<ApiToken>(webContent);
 
-        public static ApiToken ParsedToken = new();
+        UpdateTime();
+        await File.WriteAllTextAsync("token.json",
+            Serialize(ParsedToken, new JsonSerializerOptions { WriteIndented = true }));
+    }
 
-        public static async Task RetrieveToken()
+    public static async Task ResetToken()
+    {
+        var webContent = await Client.GetStringAsync(BaseUrl + "reset&token=" + ParsedToken.Token);
+
+        UpdateTime();
+        await ErrorsDictionary.HandleResponseCode(Deserialize<ApiToken>(webContent)!.ResponseCode);
+    }
+
+    public static void LoadToken()
+    {
+        if (File.Exists("token.json"))
         {
-            var webContent = await Client.GetStringAsync(BaseUrl + "request");
-            ParsedToken = Deserialize<ApiToken>(webContent);
-
-            UpdateTime();
-            await File.WriteAllTextAsync("token.json",
-                Serialize(ParsedToken, new JsonSerializerOptions {WriteIndented = true}));
+            ParsedToken = Deserialize<ApiToken>(File.ReadAllText("token.json"));
         }
+    }
 
-        public static async Task ResetToken()
-        {
-            var webContent = await Client.GetStringAsync(BaseUrl + "reset&token=" + ParsedToken.Token);
-
-            UpdateTime();
-            await ErrorsDictionary.HandleResponseCode(Deserialize<ApiToken>(webContent)!.ResponseCode);
-        }
-
-        public static void LoadToken()
-        {
-            if (File.Exists("token.json"))
-                ParsedToken = Deserialize<ApiToken>(File.ReadAllText("token.json"));
-        }
-
-        private static void UpdateTime()
-        {
-            ParsedToken.RequestDate = DateTime.Now;
-        }
+    private static void UpdateTime()
+    {
+        ParsedToken.RequestDate = DateTime.Now;
     }
 }
