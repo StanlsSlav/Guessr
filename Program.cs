@@ -7,6 +7,6 @@ internal static class Program
 {
     public static async Task Main()
     {
-        await Task.Run(Menu.Render);
+        await Task.Run(Menu.HandleMenuInputAsync);
     }
 }

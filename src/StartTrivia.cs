@@ -18,10 +18,10 @@ internal static class StartTrivia
 
         while (true)
         {
-            await ParseQuestion();
+            await ParseQuestionAsync();
 
             // Set the place of the right answer as an index
-            var placesTillCorrect = new Random().Next(0, Quiz.IncorrectAnswers.Count + 1);
+            var placesTillCorrect = Random.Shared.Next(0, Quiz.IncorrectAnswers.Count + 1);
 
             // Save the correct choice number as an non index
             var correctChoiceNr = placesTillCorrect + 1;

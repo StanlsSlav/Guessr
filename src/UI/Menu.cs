@@ -1,9 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using Guessr.Models;
+using Guessr.UI.Menus;
 using Guessr.UserSettings;
 using static System.Text.Json.JsonSerializer;
 using static Guessr.ColorFeedBack;
@@ -14,10 +14,10 @@ namespace Guessr.UI;
 
 internal static class Menu
 {
-    private static Menus _currentMenu = Menus.Main;
-    private static readonly int TotalDifficultyChoices = Enum.GetValues(typeof(DifficultyChoices)).Length;
-    private static readonly int TotalTypeChoices = Enum.GetValues(typeof(TypeChoices)).Length;
+    private static MenuType _currentMenuType = MenuType.Main;
     private static TimeSpan _waitTime = TimeSpan.FromSeconds(0.75);
+
+    private static bool _wasTokenLoaded;
 
     /// <summary>
     ///     Exit the program
@@ -33,148 +33,132 @@ internal static class Menu
     ///     Renders the menu with its options
     ///     Handles the user input
     /// </summary>
-    public static async Task Render()
+    public static async Task HandleMenuInputAsync()
     {
-        LoadToken();
+        if (!_wasTokenLoaded)
+        {
+            LoadToken();
+            _wasTokenLoaded = true;
+        }
 
-    renderStart:
         _waitTime = TimeSpan.FromSeconds(0.75);
 
         Console.Clear();
-        RenderMenu();
+        RenderCurrentMenu();
 
         Console.Write("\nInput: ");
-        var userInput = Console.ReadLine();
+        var userInput = int.TryParse(Console.ReadLine(), out var input) ? input : default;
 
-        switch (_currentMenu)
+        switch (_currentMenuType)
         {
-            case Menus.Main:
+            default:
+            case MenuType.Main:
                 switch (userInput)
                 {
-                    case "1":
+                    case 1:
                         Console.Clear();
-                        Filter(ParsedToken);
+                        Filter(ParsedApiToken);
                         await StartTrivia.Start();
                         break;
-                    case "2":
-                        _currentMenu = Menus.Settings;
+                    case 2:
+                        _currentMenuType = MenuType.Settings;
                         break;
-                    case "3":
-                        _currentMenu = Menus.Token;
+                    case 3:
+                        _currentMenuType = MenuType.Token;
                         break;
-                    case "4":
+                    case 4:
                         Exit(0);
                         break;
-                    default: goto renderStart;
                 }
 
                 break;
 
-            case Menus.Settings:
+            case MenuType.Settings:
                 switch (userInput)
                 {
-                    case "1":
-                        UserOptions.Category += 1;
-                        Colored("Category set to " + Enum.GetName(typeof(CategoryChoices), UserOptions.Category)
-                                    .Replace('_', ' '));
+                    case 1:
+                        Settings.Category.Next();
                         break;
-                    case "2":
-                        UserOptions.Difficulty = (UserOptions.Difficulty + 1) % TotalDifficultyChoices;
-                        Colored("Difficulty set to " +
-                                Enum.GetName(typeof(DifficultyChoices), UserOptions.Difficulty));
+                    case 2:
+                        Settings.Difficulty.Next();
                         break;
-                    case "3":
-                        UserOptions.Type = (UserOptions.Type + 1) % TotalTypeChoices;
-                        Colored("Questions type set to " + Enum.GetName(typeof(TypeChoices), UserOptions.Type));
+                    case 3:
+                        Settings.ChoiceType.Next();
                         break;
-                    case "4":
-                        _currentMenu = Menus.Main;
+                    case 4:
+                        _currentMenuType = MenuType.Main;
                         break;
-                    default: goto renderStart;
                 }
 
                 break;
 
-            case Menus.Token:
+            case MenuType.Token:
                 switch (userInput)
                 {
-                    case "1":
+                    case 1:
                         await RetrieveToken();
-                        Colored("Retrieved the token " + ParsedToken.Token);
+                        Colored("Retrieved the token " + ParsedApiToken.Token);
                         break;
-                    case "2":
+                    case 2:
                         await ResetToken();
-                        Colored("Reset token " + ParsedToken.Token);
+                        Colored("Reset token " + ParsedApiToken.Token);
                         break;
-                    case "3":
+                    case 3:
                         var doesTokenExist = File.Exists("token.json");
 
                         // Possible drawback, check status on file rather than object
                         var leftTime = doesTokenExist
-                                           ? Deserialize<ApiToken>(await File.ReadAllTextAsync("token.json"))
+                                           ? Deserialize<ApiToken>(await File.ReadAllTextAsync("token.json"))!
                                                  .RequestDate
                                                  .AddHours(6) -
                                              DateTime.Now
                                            : TimeSpan.FromSeconds(0);
 
-                        Colored("Token: " + ParsedToken.Token ?? "Null");
+                        Colored("Token: " + ParsedApiToken.Token);
                         Colored(
                             "Available to use: " + doesTokenExist,
                             foreground: doesTokenExist ? ConsoleColor.Green : ConsoleColor.Red
                         );
                         Colored("Time left: " + leftTime);
-                        _waitTime = TimeSpan.FromSeconds(2.5); //Extra time to appraise the token infos
+                        _waitTime = TimeSpan.FromSeconds(2.5); // Extra time to appraise the token infos
                         break;
-                    case "4":
+                    case 4:
                         Colored("Opening the path with the token file");
                         Process.Start("cmd.exe", "/c explorer " + Environment.CurrentDirectory);
                         break;
-                    case "5":
-                        _currentMenu = Menus.Main;
+                    case 5:
+                        _currentMenuType = MenuType.Main;
                         break;
-                    default: goto renderStart;
                 }
 
                 break;
         }
 
         await Task.Delay(_waitTime);
-        goto renderStart;
+        await HandleMenuInputAsync();
     }
 
-    /// <summary>
-    ///     Shows the custom menu's header with its content, options
-    /// </summary>
-    private static void RenderMenu()
+    private static void RenderCurrentMenu()
     {
-        List<string> menuOptions = new();
-
-        switch (_currentMenu)
+        switch (_currentMenuType)
         {
-            case Menus.Main:
-                Console.WriteLine("Welcome to Guessr!\nA trivia game based on OpenTrivia API\n\n");
-                menuOptions = new List<string> { "Start", "Settings", "Token", "Exit" };
+            case MenuType.Main:
+                MainBaseMenu.GetInstance().Render();
                 break;
 
-            case Menus.Settings:
-                Console.WriteLine("Settings Menu\n\n");
-                menuOptions = new List<string> { "Category", "Difficulty", "Type", "Back" };
+            case MenuType.Settings:
+                SettingsBaseMenu.GetInstance().Render();
                 break;
 
-            case Menus.Token:
-                Console.WriteLine("Token Handling Menu\n\n");
-                menuOptions = new List<string> { "Retrieve", "Reset", "Status", "Open Explorer", "Back" };
+            case MenuType.Token:
+                TokenBaseMenu.GetInstance().Render();
                 break;
-        }
 
-        for (var i = 0; i < menuOptions.Count; i++)
-        {
-            var currentNr = i + 1;
-            Colored(menuOptions[i], prefixToColor: currentNr + ")");
+            default: return;
         }
     }
 
-    private enum Menus
+    private enum MenuType
     {
         Main,
         Settings,

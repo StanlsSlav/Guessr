@@ -1,6 +1,5 @@
-﻿using System;
-using Guessr.Models;
-using static Guessr.UserSettings.UserOptions;
+﻿using Guessr.Models;
+using static Guessr.UserSettings.Settings;
 
 namespace Guessr.UserSettings;
 
@@ -12,20 +11,26 @@ internal static class FilterRequests
     {
         Options = "?amount=1";
 
-        if (UserOptions.Type != 0)
+        var responseType = ChoiceType.GetCurrent();
+        var difficulty = Difficulty.GetCurrent();
+        var category = Category.GetCurrent();
+
+        if (responseType != TriviaResponseType.All)
         {
-            Options += "&type=" + Enum.GetName(typeof(TypeChoices), UserOptions.Type)?.ToLower();
+            Options += "&type=" + responseType.ToString().ToLower();
         }
-        else if (Difficulty != 0)
+
+        if (difficulty != TriviaDifficulty.All)
         {
-            Options += "&difficulty=" + Enum.GetName(typeof(DifficultyChoices), Difficulty)?.ToLower();
+            Options += "&difficulty=" + difficulty.ToString().ToLower();
         }
-        else if (Category != 0)
+
+        if (category.Id != 0)
         {
-            //Offset
-            Options += "&category=" + (Category + 9);
+            Options += "&category=" + category.Id;
         }
-        else if (token is not null)
+
+        if (token is not null)
         {
             Options += "&token=" + token.Token;
         }
