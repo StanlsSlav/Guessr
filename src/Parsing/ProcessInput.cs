@@ -20,7 +20,7 @@ internal static class ProcessInput
                 Menu.Exit(0);
                 break;
             case "back" or "b":
-                await Task.Run(Menu.Render);
+                await Task.Run(Menu.HandleMenuInputAsync);
                 break;
         }
 

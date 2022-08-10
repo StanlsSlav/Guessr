@@ -38,7 +38,7 @@ internal static class ErrorsDictionary
         }
     };
 
-    public static async Task HandleResponseCode(int responseCode)
+    public static async Task HandleResponseCodeAsync(int responseCode)
     {
         var isTokenError = responseCode is 3 or 4;
 
