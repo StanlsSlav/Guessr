@@ -1,5 +1,5 @@
 ﻿using System.Collections.Generic;
-using static Guessr.ColorFeedBack;
+using Spectre.Console;
 
 namespace Guessr;
 
@@ -20,7 +20,7 @@ public abstract class Repeatable<T>
         _index++;
         _index = _index >= _repeatable.Count ? 0 : _index;
 
-        Colored($"{typeof(T).Name} set to {GetCurrent()}");
+        AnsiConsole.MarkupLineInterpolated($"[cyan]{typeof(T).Name}[/] set to [cyan]{GetCurrent()}[/]");
     }
 
     public T GetCurrent()

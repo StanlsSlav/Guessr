@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
+using Spectre.Console;
 
 namespace Guessr.UI.Menus;
 
@@ -9,7 +9,7 @@ namespace Guessr.UI.Menus;
 /// </summary>
 public abstract class BaseMenu<T> where T : new()
 {
-    private static T _instance;
+    private static readonly Lazy<T> _lazy = new(() => new T());
 
     /// <summary>
     ///     Provide static access to non-static parameters
@@ -17,31 +17,42 @@ public abstract class BaseMenu<T> where T : new()
     /// <seealso cref="Options"/>
     /// </summary>
     /// <returns>The instance of <see cref="T"/></returns>
-    public static T GetInstance() => _instance ??= new T();
+    public static T GetInstance() => _lazy.Value;
+
+    private readonly SelectionPrompt<string> _selectionPrompt;
+
+    protected BaseMenu()
+    {
+        _selectionPrompt = new SelectionPrompt<string>();
+        _selectionPrompt.AddChoices(Options);
+        _headerRule.Title = Header;
+    }
 
     /// <summary>
     ///     The menu's header to print
     /// </summary>
     /// <exception cref="Exception">Throws when trying to set the value to empty or null</exception>
-    [Required]
     protected abstract string Header { get; }
 
     /// <summary>
     ///     The menu's options to print
     /// </summary>
     /// <exception cref="Exception">Throws when trying to set the value to an empty list</exception>
-    protected abstract IReadOnlyList<string> Options { get; }
+    protected abstract List<string> Options { get; }
 
-    /// <summary>
-    ///     Print the menu to the console
-    /// </summary>
-    public void Render()
+    private readonly Rule _headerRule = new()
     {
-        Console.WriteLine(Header + "\n\n");
+        Alignment = Justify.Left,
+        Style = new Style(Color.Aquamarine1)
+    };
 
-        for (var i = 0; i < Options.Count; i++)
-        {
-            ColorFeedBack.Colored(Options[i], prefixToColor: i + 1 + ")");
-        }
+    public int GetSelectedOption()
+    {
+        AnsiConsole.Write(_headerRule);
+        AnsiConsole.WriteLine();
+
+        return Options.IndexOf(AnsiConsole.Prompt(
+                   _selectionPrompt
+               )) + 1;
     }
 }

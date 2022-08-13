@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Threading.Tasks;
 using Guessr.UI;
 using static Guessr.Parsing.ParseRequest;
@@ -16,15 +16,14 @@ internal static class ProcessInput
         // Custom console commands during the game
         switch (input)
         {
-            case "quit" or "q":
+            case "Quit":
                 Menu.Exit(0);
                 break;
-            case "back" or "b":
+            case "Back":
                 await Task.Run(Menu.HandleMenuInputAsync);
                 break;
         }
 
-        // CapsLock forgotten
-        return string.Equals(input, Quiz.CorrectAnswer, StringComparison.CurrentCultureIgnoreCase);
+        return Quiz.CorrectAnswer.Equals(input);
     }
 }

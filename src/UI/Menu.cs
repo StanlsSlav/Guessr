@@ -1,12 +1,9 @@
 ﻿using System;
 using System.Diagnostics;
-using System.IO;
 using System.Threading.Tasks;
-using Guessr.Models;
 using Guessr.UI.Menus;
 using Guessr.UserSettings;
-using static System.Text.Json.JsonSerializer;
-using static Guessr.ColorFeedBack;
+using Spectre.Console;
 using static Guessr.UserSettings.FilterRequests;
 using static Guessr.Parsing.ParseApiToken;
 
@@ -15,7 +12,7 @@ namespace Guessr.UI;
 internal static class Menu
 {
     private static MenuType _currentMenuType = MenuType.Main;
-    private static TimeSpan _waitTime = TimeSpan.FromSeconds(0.75);
+    private static TimeSpan _waitTime;
 
     private static bool _wasTokenLoaded;
 
@@ -24,8 +21,8 @@ internal static class Menu
     /// </summary>
     public static readonly Action<int> Exit = exitCode =>
     {
-        Console.Clear();
-        Colored("GoodBye!", foreground: ConsoleColor.Cyan);
+        AnsiConsole.Clear();
+        AnsiConsole.WriteLine("GoodBye!");
         Environment.Exit(exitCode);
     };
 
@@ -37,17 +34,14 @@ internal static class Menu
     {
         if (!_wasTokenLoaded)
         {
-            LoadToken();
+            await LoadTokenAsync();
             _wasTokenLoaded = true;
         }
 
         _waitTime = TimeSpan.FromSeconds(0.75);
 
-        Console.Clear();
-        RenderCurrentMenu();
-
-        Console.Write("\nInput: ");
-        var userInput = int.TryParse(Console.ReadLine(), out var input) ? input : default;
+        AnsiConsole.Clear();
+        var userInput = GetSelectedOptionAndRenderCurrentMenu();
 
         switch (_currentMenuType)
         {
@@ -56,7 +50,7 @@ internal static class Menu
                 switch (userInput)
                 {
                     case 1:
-                        Console.Clear();
+                        AnsiConsole.Clear();
                         Filter(ParsedApiToken);
                         await StartTrivia.Start();
                         break;
@@ -97,34 +91,26 @@ internal static class Menu
                 {
                     case 1:
                         await RetrieveToken();
-                        Colored("Retrieved the token " + ParsedApiToken.Token);
+                        AnsiConsole.MarkupLine($"Retrieved the token [cyan]{ParsedApiToken.Token}[/]");
                         break;
                     case 2:
                         await ResetToken();
-                        Colored("Reset token " + ParsedApiToken.Token);
+                        AnsiConsole.MarkupLine($"Reset token [cyan]{ParsedApiToken.Token}[/]");
                         break;
                     case 3:
-                        var doesTokenExist = File.Exists("token.json");
+                        var isTokenValid = IsTokenValid();
+                        var tokenValidityColor = isTokenValid ? "green" : "red";
 
-                        // Possible drawback, check status on file rather than object
-                        var leftTime = doesTokenExist
-                                           ? Deserialize<ApiToken>(await File.ReadAllTextAsync("token.json"))!
-                                                 .RequestDate
-                                                 .AddHours(6) -
-                                             DateTime.Now
-                                           : TimeSpan.FromSeconds(0);
+                        AnsiConsole.MarkupLine($"Token: [cyan]{ParsedApiToken.Token}[/]");
+                        AnsiConsole.MarkupLine($"Available to use: [{tokenValidityColor}]{isTokenValid}[/]");
+                        AnsiConsole.MarkupLine($"Time left: [{tokenValidityColor}]{ParsedApiToken.LeftTime}[/]");
 
-                        Colored("Token: " + ParsedApiToken.Token);
-                        Colored(
-                            "Available to use: " + doesTokenExist,
-                            foreground: doesTokenExist ? ConsoleColor.Green : ConsoleColor.Red
-                        );
-                        Colored("Time left: " + leftTime);
-                        _waitTime = TimeSpan.FromSeconds(2.5); // Extra time to appraise the token infos
+                        // Extra time to appraise the token infos
+                        _waitTime = TimeSpan.FromSeconds(2.5);
                         break;
                     case 4:
-                        Colored("Opening the path with the token file");
-                        Process.Start("cmd.exe", "/c explorer " + Environment.CurrentDirectory);
+                        AnsiConsole.WriteLine("Opening the path with the token file");
+                        Process.Start("cmd.exe", $"/c explorer {Environment.CurrentDirectory}");
                         break;
                     case 5:
                         _currentMenuType = MenuType.Main;
@@ -138,24 +124,15 @@ internal static class Menu
         await HandleMenuInputAsync();
     }
 
-    private static void RenderCurrentMenu()
+    private static int GetSelectedOptionAndRenderCurrentMenu()
     {
-        switch (_currentMenuType)
+        return _currentMenuType switch
         {
-            case MenuType.Main:
-                MainBaseMenu.GetInstance().Render();
-                break;
-
-            case MenuType.Settings:
-                SettingsBaseMenu.GetInstance().Render();
-                break;
-
-            case MenuType.Token:
-                TokenBaseMenu.GetInstance().Render();
-                break;
-
-            default: return;
-        }
+            MenuType.Main     => MainBaseMenu.GetInstance().GetSelectedOption(),
+            MenuType.Settings => SettingsBaseMenu.GetInstance().GetSelectedOption(),
+            MenuType.Token    => TokenBaseMenu.GetInstance().GetSelectedOption(),
+            _                 => 0
+        };
     }
 
     private enum MenuType

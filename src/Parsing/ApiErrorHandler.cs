@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Guessr.UI;
-using static System.ConsoleColor;
-using static Guessr.ColorFeedBack;
+using Spectre.Console;
 using static Guessr.Parsing.ParseApiToken;
 
 namespace Guessr.Parsing;
@@ -49,14 +48,12 @@ internal static class ErrorsDictionary
         }
 
     showError:
-        Colored(
-            input: $"ERROR ENCOUNTERED! Continue? (Y/N)\n\t{Error[responseCode][0]} -- {Error[responseCode][1]}\n",
-            foreground: Red
-        );
+        AnsiConsole.MarkupLine("[red]ERROR ENCOUNTERED![/] Continue? (Y/N)");
+        AnsiConsole.MarkupLineInterpolated($"\t[red]{Error[responseCode][0]}[/] -- [red]{Error[responseCode][1]}[/]\n");
 
         if (isTokenError)
         {
-            Colored(input: "Retrieve a token? (R)", foreground: Yellow);
+            AnsiConsole.MarkupLine("[dodgerblue1]Retrieve a token?[/] (R)");
         }
 
         // Continue or bail?
@@ -72,7 +69,10 @@ internal static class ErrorsDictionary
 
             case { Key: ConsoleKey.R }:
                 if (isTokenError)
+                {
                     await RetrieveToken();
+                }
+
                 break;
 
             default:

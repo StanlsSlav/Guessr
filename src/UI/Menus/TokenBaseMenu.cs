@@ -4,8 +4,8 @@ namespace Guessr.UI.Menus;
 
 public class TokenBaseMenu : BaseMenu<TokenBaseMenu>
 {
-    protected override string Header => "Token Handling Menu";
+    protected override string Header => "Token Handling";
 
-    protected override IReadOnlyList<string> Options { get; } =
-        new[] { "Retrieve", "Reset", "Status", "Open Explorer", "Back" };
+    protected override List<string> Options { get; } =
+        new() { "Retrieve", "Reset", "Status", "Open Explorer", "Back" };
 }

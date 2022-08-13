@@ -23,13 +23,19 @@ internal static class ParseRequest
         var webResponse = await HttpClient.GetStringAsync(BaseUrl + FilterRequests.Options);
         var root = Deserialize<Root>(webResponse);
 
-        // Had returned an error?
-        if (root is null || !root.Results.Any())
+        if (root is null)
         {
             return;
         }
 
         await HandleResponseCodeAsync(root.ResponseCode);
+
+        // Had returned an error?
+        if (!root.Results.Any())
+        {
+            return;
+        }
+
         Quiz = root.Results.First();
 
         // Html Decoding

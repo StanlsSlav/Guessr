@@ -15,4 +15,8 @@ public class ApiToken
     public string Token { get; set; }
 
     public DateTime RequestDate { get; set; }
+
+    public DateTime ExpirationDate { get; set; }
+
+    public TimeSpan LeftTime { get; set; }
 }
